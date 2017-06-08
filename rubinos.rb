@@ -1,8 +1,8 @@
 require 'nokogiri'
 require 'open-uri'
-require 'twilio-ruby'
 require 'open_uri_redirections'
 require 'csv'
+require 'pony'
 
 class Pizza
 	attr_reader :friend, :number, :order_time, :order_description
@@ -27,7 +27,7 @@ end
 
 contacts = {}
 # pizza_orders = [] 
-test_numbers = {'Joel Guerra' => '2539613325', 'Stormy Guerra' => '2539615845'}
+test_numbers = {'Russell Wilson' => '2063331212', 'Anakin Skywalker' => '2536066666'}
 
 CSV.foreach("contacts.csv") do |row|
 	contacts[row[0]] = row[1]
