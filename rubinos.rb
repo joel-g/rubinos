@@ -4,9 +4,9 @@ require 'open_uri_redirections'
 require 'csv'
 require 'pony'
 
-class Pizza
+class PizzaOrder
 	attr_reader :friend, :number, :order_time, :order_description
-	def initialize(friend, number, order, order_description)
+	def initialize(friend, number, order, order_description = nil)
 		@friend = friend
 		@number = number
 		@order_time = order_time
@@ -18,12 +18,11 @@ def call_dominos(list, delay)
 	pizza_orders = []
 	list.each do |friend, number|
 		this_order = Nokogiri::HTML(open('https://order.dominos.com/orderstorage/GetTrackerData?Phone=' + number))
-		pizza_orders <<	Pizza.new(friend, number, this_order.)
+		pizza_orders <<	PizzaOrder.new(friend, number, this_order)
 		puts "Checking #{friend}..."
 		sleep(delay)
 	end
 end
-
 
 contacts = {}
 # pizza_orders = [] 
@@ -34,14 +33,18 @@ CSV.foreach("contacts.csv") do |row|
 end
 
 if ARGV.any?
-	delay = ARGV[1].to_i || 60
-	if ARGV[0] == 'test'
+	mode = ARGV[0]
+	each_delay = (ARGV[1] || 60).to_i
+	loop_delay = (ARGV[2] || 45).to_i * 60
+	if mode == 'test'
 		call_dominos(test_numbers, 3)
-	elsif ARGV[0] == 'once'
-		call_dominos(contacts, delay)
-	elsif ARGV[0] == 'loop'
+	elsif mode == 'once'
+		call_dominos(contacts, each_delay)
+	elsif mode == 'loop'
 		until
-			call_dominos(contacts, delay)
+			call_dominos(contacts, each_delay)
+			puts "Waiting #{loop_delay / 60} to check again."
+			sleep(loop_delay)
 		end
 	else
 		raise "Unknown Rubino's Command: #{ARGV[1]}"
