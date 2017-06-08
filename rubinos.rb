@@ -22,14 +22,15 @@ def call_dominos(list, delay)
 		puts "Checking #{friend}..."
 		sleep(delay)
 	end
+	pizza_orders
 end
+# Must make break when acquires valid order
 
-contacts = {}
-# pizza_orders = [] 
 test_numbers = {'Russell Wilson' => '2063331212', 'Anakin Skywalker' => '2536066666'}
+friends = {}
 
-CSV.foreach("contacts.csv") do |row|
-	contacts[row[0]] = row[1]
+CSV.foreach("friends.csv") do |row|
+	friends[row[0]] = row[1]
 end
 
 if ARGV.any?
@@ -39,10 +40,10 @@ if ARGV.any?
 	if mode == 'test'
 		call_dominos(test_numbers, 3)
 	elsif mode == 'once'
-		call_dominos(contacts, each_delay)
+		call_dominos(friends, each_delay)
 	elsif mode == 'loop'
 		until
-			call_dominos(contacts, each_delay)
+			call_dominos(friends, each_delay)
 			puts "Waiting #{loop_delay / 60} to check again."
 			sleep(loop_delay)
 		end
@@ -52,4 +53,4 @@ if ARGV.any?
 end
 
 
-# puts orders[0].order.text
+# XML tags to grab 'OrderDescription', 'StartTime'
