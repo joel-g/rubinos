@@ -1,5 +1,5 @@
 # rubinos
-##### Stalk your friend's Domino's orders so you never miss out on a pizza party
+##### Stalk your friends' Domino's orders so you never miss out on a pizza party
 
 ### Command line usage
 
