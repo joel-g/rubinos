@@ -5,25 +5,48 @@ require 'csv'
 require 'pony'
 
 class PizzaOrder
-	attr_reader :friend, :number, :order_time, :order_description
-	def initialize(friend, number, order, order_description = nil)
+	attr_reader :friend, :number, :order_time, :order_description, :real_order
+	def initialize(friend, number, order, order_description = [])
 		@friend = friend
 		@number = number
 		@order_time = order_time
-		@order_description = order_description
+		@order_description = []
 	end
+
+	# def real
+	# 	@real_order = true
+	# end
+
+	def add_food(order_item)
+		@order_description << order_item
+	end	
 end
 
+
+
+#https://order.dominos.com/orderstorage/GetTrackerData?Phone=
 def call_dominos(list, delay)
 	pizza_orders = []
 	list.each do |friend, number|
-		this_order = Nokogiri::HTML(open('https://order.dominos.com/orderstorage/GetTrackerData?Phone=' + number))
-		pizza_orders <<	PizzaOrder.new(friend, number, this_order)
 		puts "Checking #{friend}..."
+		current_order = Nokogiri::HTML(open('https://www.dominos.com/en/pages/tracker/?uph=' + number)) #https://www.dominos.com/en/pages/tracker/?uph=' + number))
+		if current_order.css('.orderItem')
+		p current_order.css('.orderItem')
+			puts "FOUND AN ORDER FOR: #{friend}"
+			pizza = PizzaOrder.new(friend, number, current_order)
+			current_order.css('.orderItem').each do |item|
+				current_order.add_food(item)
+			end
+		end	
 		sleep(delay)
+
 	end
 	pizza_orders
 end
+
+#forwarded to https://www.dominos.com/en/pages/tracker/#/track/order/712970268473/StoreID/7129/
+#orderItem
+
 # Must make break when acquires valid order
 
 test_numbers = {'Russell Wilson' => '2063331212', 'Anakin Skywalker' => '2536066666'}
