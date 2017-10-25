@@ -19,3 +19,7 @@ loop_delay
 
 
 NOTE: You must supply a friends.csv file formated: ``` name, 10-digit-phone ``` 
+
+
+THIS IS A PROOF OF CONCEPT PROJECT AND SHOULD NOT ACTUALLY BE USED AS IT IS A VIOLATION OF DOMINO'S TERMS OF SERVICE.
+However, they should really secure their order system because their competitors could use it to gather data on all of Domino's customers.
